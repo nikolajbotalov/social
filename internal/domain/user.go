@@ -9,9 +9,7 @@ type User struct {
 	Nickname  string    `json:"nickname"`
 	Birthday  string    `json:"birthday,omitempty"`
 	LastVisit time.Time `json:"last_visit"`
-	Interests []string  `json:"interests"`
-	Channels  []int64   `json:"channels"`
-	Following []int64   `json:"following"`
+	Interests time.Time `json:"interests"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
