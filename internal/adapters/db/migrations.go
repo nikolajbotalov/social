@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-// 172.18.0.2:5433
-
 func RunMigrations(cfg config.Postgres, logger *zap.Logger) error {
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.Database)
