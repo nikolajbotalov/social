@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Listen   Listen
 	Postgres Postgres
+	JWT      JWTConfig
 }
 
 type Listen struct {
@@ -22,6 +23,10 @@ type Postgres struct {
 	Host     string `env:"PSQL_HOST" env-default:"host.docker.internal"`
 	Port     string `env:"PSQL_PORT" env-default:"5432"`
 	Database string `env:"PSQL_DATABASE" env-default:"social"`
+}
+
+type JWTConfig struct {
+	Secret string `env:"JWT_SECRET" env-default:"x7K9pL2mQ8vT5nR3jW6bY4zA1cF0eH"`
 }
 
 var instance *Config
