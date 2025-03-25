@@ -6,6 +6,7 @@ import (
 	"social/internal/config"
 	"social/internal/logger"
 	authRepository "social/internal/repositories/auth"
+	authUseCases "social/internal/usecases/auth"
 )
 
 type App struct {
@@ -44,8 +45,9 @@ func NewApp() (*App, error) {
 		return nil, err
 	}
 
-	authRepo := authRepository.NewAuth(dbInstance.Pool(), zapLogger, cfg.JWT.Secret)
-	zapLogger.Info("Initialized auth repository", zap.Any("authRepo", authRepo))
+	authRepo := authRepository.NewAuth(dbInstance.Pool(), zapLogger, cfg)
+	authCases := authUseCases.NewAuthUseCases(authRepo, zapLogger, cfg)
+	zapLogger.Info("Initialized auth authCases", zap.Any("authCases", authCases))
 
 	// инициализация сервера
 	server := NewServer(cfg, zapLogger)

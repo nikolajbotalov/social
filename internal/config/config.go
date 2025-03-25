@@ -4,6 +4,7 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"
 	"sync"
+	"time"
 )
 
 type Config struct {
@@ -26,7 +27,9 @@ type Postgres struct {
 }
 
 type JWTConfig struct {
-	Secret string `env:"JWT_SECRET" env-default:"x7K9pL2mQ8vT5nR3jW6bY4zA1cF0eH"`
+	Secret          string        `env:"JWT_SECRET" env-default:"x7K9pL2mQ8vT5nR3jW6bY4zA1cF0eH"`
+	AccessTokenTTL  time.Duration `env:"JWT_ACCESS_TTL" env-default:"24h"`
+	RefreshTokenTTL time.Duration `env:"JWT_REFRESH_TTL" env-default:"168h"`
 }
 
 var instance *Config
