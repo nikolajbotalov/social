@@ -5,6 +5,7 @@ import (
 	"social/internal/adapters/db"
 	"social/internal/config"
 	"social/internal/logger"
+	authRepository "social/internal/repositories/auth"
 )
 
 type App struct {
@@ -42,6 +43,9 @@ func NewApp() (*App, error) {
 		zapLogger.Error("failed to initialize db", zap.Error(err))
 		return nil, err
 	}
+
+	authRepo := authRepository.NewAuth(dbInstance.Pool(), zapLogger, cfg.JWT.Secret)
+	zapLogger.Info("Initialized auth repository", zap.Any("authRepo", authRepo))
 
 	// инициализация сервера
 	server := NewServer(cfg, zapLogger)
