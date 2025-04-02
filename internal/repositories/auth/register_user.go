@@ -57,7 +57,7 @@ func (r *authRepository) RegisterUser(ctx context.Context, nickname, password st
 		Values(id, nickname, passwordHash).PlaceholderFormat(sq.Dollar).ToSql()
 
 	// Выполняем запрос к БД
-	_, err = r.db.Exec(ctx, queryAuth, argsAuth...)
+	_, err = tx.Exec(ctx, queryAuth, argsAuth...)
 	if err != nil {
 		r.logger.Error("Failed to insert into auth", zap.Error(err), zap.String("nickname", nickname))
 		return err

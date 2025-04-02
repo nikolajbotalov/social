@@ -11,7 +11,7 @@ import (
 
 type Repository interface {
 	RegisterUser(ctx context.Context, nickname, password string) error
-	Login(cxt context.Context, nickname, password string) (domain.TokenPair, error)
+	Login(cxt context.Context, nickname, password string) (string, domain.TokenPair, error)
 	StoreRefreshToken(ctx context.Context, userID, token string, expiresAt time.Time) error
 	ValidateRefreshToken(ctx context.Context, token string) (string, error)
 	GenerateTokenPair(userID string) (domain.TokenPair, error)

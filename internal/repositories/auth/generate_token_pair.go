@@ -15,7 +15,8 @@ func (r *authRepository) GenerateTokenPair(userID string) (domain.TokenPair, err
 		"id":  userID,
 		"exp": jwt.NewNumericDate(time.Now().Add(r.config.JWT.AccessTokenTTL)),
 	})
-	accessToken, err := token.SignedString(r.config.JWT.Secret)
+	secretBytes := []byte(r.config.JWT.Secret)
+	accessToken, err := token.SignedString(secretBytes)
 	if err != nil {
 		return domain.TokenPair{}, fmt.Errorf("failed to sign access token: %w", err)
 	}

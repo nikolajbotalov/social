@@ -47,10 +47,9 @@ func NewApp() (*App, error) {
 
 	authRepo := authRepository.NewAuth(dbInstance.Pool(), zapLogger, cfg)
 	authCases := authUseCases.NewAuthUseCases(authRepo, zapLogger, cfg)
-	zapLogger.Info("Initialized auth authCases", zap.Any("authCases", authCases))
 
 	// инициализация сервера
-	server := NewServer(cfg, zapLogger)
+	server := NewServer(cfg, authCases, zapLogger)
 
 	return &App{
 		Logger: zapLogger,

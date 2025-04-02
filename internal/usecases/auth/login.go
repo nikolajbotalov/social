@@ -16,7 +16,7 @@ func (uc *authUseCases) Login(ctx context.Context, nickname, password string) (d
 	}
 
 	// выполняет вход
-	tokens, err := uc.repo.Login(ctx, nickname, password)
+	userID, tokens, err := uc.repo.Login(ctx, nickname, password)
 	if err != nil {
 		uc.logger.Error("Failed login", zap.Error(err), zap.String("nickname", nickname))
 		return domain.TokenPair{}, err
@@ -24,7 +24,7 @@ func (uc *authUseCases) Login(ctx context.Context, nickname, password string) (d
 
 	// Сохраняем refresh-токен
 	expiresAt := time.Now().Add(uc.config.JWT.AccessTokenTTL)
-	err = uc.repo.StoreRefreshToken(ctx, tokens.AccessToken, tokens.RefreshToken, expiresAt)
+	err = uc.repo.StoreRefreshToken(ctx, userID, tokens.RefreshToken, expiresAt)
 	if err != nil {
 		uc.logger.Error("Failed to store refresh token", zap.Error(err))
 		return domain.TokenPair{}, err
