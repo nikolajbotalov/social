@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
@@ -33,9 +34,9 @@ func (r *userRepository) GetByID(ctx context.Context, id string) (*domain.User, 
 		&user.CreatedAt,
 		&user.UpdatedAt,
 	); err != nil {
-		if err == pgx.ErrNoRows {
+		if errors.Is(err, pgx.ErrNoRows) {
 			r.logger.Error("User not found", zap.String("id", id))
-			return nil, err
+			return nil, domain.ErrUserNotFound
 		}
 		r.logger.Error("Failed to scan row", zap.Error(err))
 		return nil, err

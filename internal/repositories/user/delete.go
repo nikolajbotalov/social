@@ -2,9 +2,9 @@ package user
 
 import (
 	"context"
-	"fmt"
 	sq "github.com/Masterminds/squirrel"
 	"go.uber.org/zap"
+	"social/internal/domain"
 )
 
 func (r *userRepository) Delete(ctx context.Context, id string) error {
@@ -24,7 +24,7 @@ func (r *userRepository) Delete(ctx context.Context, id string) error {
 
 	if result.RowsAffected() == 0 {
 		r.logger.Error("User not found to delete", zap.String("id", id))
-		return fmt.Errorf("user not fount")
+		return domain.ErrUserNotFound
 	}
 
 	r.logger.Info("Successfully deleted user", zap.String("id", id))
