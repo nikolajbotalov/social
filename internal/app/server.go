@@ -11,7 +11,9 @@ import (
 	"os/signal"
 	"social/internal/config"
 	authHandlers "social/internal/handlers/auth"
+	userHandlers "social/internal/handlers/user"
 	authUseCases "social/internal/usecases/auth"
+	"social/internal/usecases/user"
 	"syscall"
 	"time"
 )
@@ -22,7 +24,7 @@ type Server struct {
 }
 
 // NewServer Создает и возвращает новый HTTP сервер
-func NewServer(cfg *config.Config, authUseCases authUseCases.UseCases, logger *zap.Logger) *Server {
+func NewServer(cfg *config.Config, authUseCases authUseCases.UseCases, userUseCases user.UseCase, logger *zap.Logger) *Server {
 	router := gin.New()
 
 	router.Use(ginZapLogger(logger))
@@ -30,6 +32,7 @@ func NewServer(cfg *config.Config, authUseCases authUseCases.UseCases, logger *z
 
 	// настройка маршрутов
 	authHandlers.SetupAuthRoutes(router, authUseCases, logger)
+	userHandlers.SetupUserRoutes(router, userUseCases, logger)
 
 	address := fmt.Sprintf("%s:%s", cfg.Listen.BindIP, cfg.Listen.Port)
 	return &Server{

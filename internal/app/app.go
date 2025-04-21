@@ -6,7 +6,9 @@ import (
 	"social/internal/config"
 	"social/internal/logger"
 	authRepository "social/internal/repositories/auth"
+	userRepository "social/internal/repositories/user"
 	authUseCases "social/internal/usecases/auth"
+	userUseCases "social/internal/usecases/user"
 )
 
 type App struct {
@@ -45,11 +47,16 @@ func NewApp() (*App, error) {
 		return nil, err
 	}
 
+	// инициализация репозиториев
 	authRepo := authRepository.NewAuth(dbInstance.Pool(), zapLogger, cfg)
+	userRepo := userRepository.NewUser(dbInstance.Pool(), zapLogger)
+
+	// инициализация юзкейсов
 	authCases := authUseCases.NewAuthUseCases(authRepo, zapLogger, cfg)
+	userCases := userUseCases.NewUserUseCases(userRepo, zapLogger)
 
 	// инициализация сервера
-	server := NewServer(cfg, authCases, zapLogger)
+	server := NewServer(cfg, authCases, userCases, zapLogger)
 
 	return &App{
 		Logger: zapLogger,
