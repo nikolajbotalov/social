@@ -17,6 +17,15 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type GetAllResponse struct {
+	Users []User `json:"users"`
+	Meta  struct {
+		Limit  int `json:"limit"`
+		Offset int `json:"offset"`
+		Total  int `json:"total"`
+	} `json:"meta"`
+}
+
 var (
 	ErrInvalidPagination = errors.New("invalid pagination parameters")
 	ErrUserNotFound      = errors.New("user not found")
