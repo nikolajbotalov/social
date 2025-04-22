@@ -12,8 +12,7 @@ import (
 func (r *userRepository) GetByID(ctx context.Context, id string) (*domain.User, error) {
 	r.logger.Info("Fetching user", zap.String("id", id))
 
-	query, args, err := sq.Select("id", "first_name", "last_name", "nickname", "birthday", "last_visit",
-		"interests", "created_at", "updated_at").From("users").Where(sq.Eq{"id": id}).
+	query, args, err := sq.Select("*").From("users").Where(sq.Eq{"id": id}).
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
 		r.logger.Error("Failed to build query", zap.Error(err))
