@@ -10,9 +10,7 @@ import (
 func (r *userRepository) GetAll(ctx context.Context, limit, offset int) ([]domain.User, error) {
 	r.logger.Info("Fetching all users")
 
-	columns := []string{"id", "first_name", "last_name", "nickname", "birthday", "last_visit",
-		"interests", "created_at", "updated_at"}
-	query, args, err := sq.Select(columns...).From("users").Limit(uint64(limit)).Offset(uint64(offset)).
+	query, args, err := sq.Select("*").From("users").Limit(uint64(limit)).Offset(uint64(offset)).
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
 		r.logger.Error("Failed to build query", zap.Error(err))
